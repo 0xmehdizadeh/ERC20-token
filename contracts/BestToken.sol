@@ -18,6 +18,13 @@ contract BestToken is ERC20, ERC20Capped, ERC20Burnable, ERC20Permit, Ownable2St
       super._update(from, to, value);
    }
 
-   
+   function pause() external onlyOwner {
+      _pause();
+   }
+   function unpause() external onlyOwner {
+      _unpause();
+   }
+
+
    
 }
