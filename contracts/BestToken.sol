@@ -26,5 +26,5 @@ contract BestToken is ERC20, ERC20Capped, ERC20Burnable, ERC20Permit, Ownable2St
    }
 
 
-   
+
 }
