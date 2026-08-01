@@ -25,6 +25,8 @@ contract BestToken is ERC20, ERC20Capped, ERC20Burnable, ERC20Permit, Ownable2St
       _unpause();
    }
 
-
+   function mint(address to, uint256 amount) external onlyOwner {
+      _mint(to, amount);
+   }
 
 }
