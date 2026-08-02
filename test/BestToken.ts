@@ -25,9 +25,11 @@ describe("BestToken", function () {
   expect(symbol).to.equal("BST");
  });
 
- it("Should set total supply correctly", async function() {
+ it("Should set totalSupply and cap(maxSupply) correctly", async function() {
   const totalSupply = await BestToken.totalSupply();
+  const maxSupply = await BestToken.cap();
   expect(totalSupply).to.equal(ethers.parseUnits("1000000", 18));
+  expect(maxSupply).to.equal(ethers.parseUnits("2000000", 18));
  });
 
  it("Should set the owner correctly", async function () {
