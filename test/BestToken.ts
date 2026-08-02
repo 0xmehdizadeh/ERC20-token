@@ -11,7 +11,7 @@ describe("BestToken", function () {
  beforeEach(async function () {
   ({ethers} = await network.create());
   [owner, user1, user2] = await ethers.getSigners();
-  BestToken = await ethers.deployContract("BestToken", ["BestToken", "BST", owner.address, ethers.parseEther("1000000")]);
+  BestToken = await ethers.deployContract("BestToken", ["BestToken", "BST", owner.address, "1000000"]);
   await BestToken.waitForDeployment();
  });
 
