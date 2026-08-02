@@ -20,4 +20,8 @@ describe("BestToken", function () {
    expect(name).to.equal("BestToken");
  });
 
+ it("Should set the token's symbol correctly", async function () {
+  const symbol = await BestToken.symbol();
+  expect(symbol).to.equal("BST");
+ });
 });
