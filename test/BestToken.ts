@@ -30,6 +30,9 @@ describe("BestToken", function () {
   expect(totalSupply).to.equal(ethers.parseUnits("1000000", 18));
  });
 
-
+ it("Should set the owner correctly", async function () {
+   const contractOwner = await BestToken.owner();
+   expect(contractOwner).to.equal(owner.address);
+ });
 
 });
