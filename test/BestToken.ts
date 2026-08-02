@@ -24,4 +24,12 @@ describe("BestToken", function () {
   const symbol = await BestToken.symbol();
   expect(symbol).to.equal("BST");
  });
+
+ it("Should set total supply correctly", async function() {
+  const totalSupply = await BestToken.totalSupply();
+  expect(totalSupply).to.equal(ethers.parseUnits("1000000", 18));
+ });
+
+
+
 });
