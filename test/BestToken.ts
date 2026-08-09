@@ -44,4 +44,17 @@ describe("BestToken", function () {
     BestToken, "OwnableUnauthorizedAccount").withArgs(user1.address);
  });
 
+ it("Owner calls mint function", async function() {
+  const initialSupply = await BestToken.totalSupply();
+  const mintAmount = ethers.parseUnits("1000", 18);
+  await BestToken.connect(owner).mint(
+    user1.address,
+    mintAmount
+  );
+  const totalSupply = await BestToken.totalSupply();
+  const user1Balance = await BestToken.balanceOf(user1.address);
+  expect(totalSupply).to.equal(initialSupply + mintAmount);
+  expect(user1Balance).to.equal(mintAmount);
+ });
+
 });
