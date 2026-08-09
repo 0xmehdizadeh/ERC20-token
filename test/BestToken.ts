@@ -66,4 +66,20 @@ describe("BestToken", function () {
     .withArgs(initialSupply + mintedAmount , cap);
  });
 
+ it("Owner pauses and unpauses the token transfer", async function(){
+  const mintedAmount = ethers.parseEther("1000");
+  await BestToken.connect(owner).mint(user1.address, mintedAmount);
+  await BestToken.connect(owner).pause();
+  await expect(
+    BestToken.connect(user1).transfer(user2.address, mintedAmount),
+  ).to.be.revertedWithCustomError(BestToken, "EnforcedPause");
+
+  await BestToken.connect(owner).unpause();
+  await BestToken.connect(user1).transfer(user2.address, mintedAmount);
+  const user2Balance = await BestToken.balanceOf(user2.address);
+  expect(user2Balance).to.equal(mintedAmount);
+ });
+ 
+ 
+
 });
