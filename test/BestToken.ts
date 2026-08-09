@@ -57,4 +57,13 @@ describe("BestToken", function () {
   expect(user1Balance).to.equal(mintAmount);
  });
 
+ it("Mint new tokens exceeds the cap", async function(){
+  const cap = await BestToken.cap();
+  const initialSupply = await BestToken.totalSupply();
+  const mintedAmount = ethers.parseEther("1100000");
+  await expect(BestToken.connect(owner).mint(owner.address, mintedAmount))
+    .to.be.revertedWithCustomError(BestToken, "ERC20ExceededCap")
+    .withArgs(initialSupply + mintedAmount , cap);
+ });
+
 });
