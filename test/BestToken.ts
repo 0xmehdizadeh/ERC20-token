@@ -39,4 +39,9 @@ describe("BestToken", function () {
    expect(balanceOfOwner).to.equal(ethers.parseUnits("1000000", 18));
  });
 
+ it("Not-owner cannot call mint function", async function(){
+  await expect(BestToken.connect(user1).mint(user1.address, 1000)).to.be.revertedWithCustomError(
+    BestToken, "OwnableUnauthorizedAccount").withArgs(user1.address);
+ });
+
 });
