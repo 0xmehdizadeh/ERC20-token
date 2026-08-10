@@ -111,5 +111,13 @@ describe("BestToken", function () {
    ).to.be.revertedWithCustomError(BestToken, "OwnableUnauthorizedAccount").withArgs(user2.address);
  });
  
+ it("Burn tokens", async function() {
+  const burnAmount = ethers.parseEther("1000");
+  const initialSupply = await BestToken.balanceOf(owner.address);
+  await BestToken.connect(owner).burn(burnAmount);
+  const ownerBalance = await BestToken.balanceOf(owner.address);
+  expect(ownerBalance).to.equal(initialSupply - burnAmount);
+ });
+
 
 });
