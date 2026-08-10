@@ -100,6 +100,16 @@ describe("BestToken", function () {
    
    expect(theOwner).to.equal(user1.address);
  });
+
+ it("Wrong address tries to accept the ownership", async function () {
+   await BestToken.connect(owner).transferOwnership(user1.address);
+   let theOwner = await BestToken.owner();
+   expect(theOwner).to.equal(owner.address);
+
+   await expect(
+     BestToken.connect(user2).acceptOwnership(),
+   ).to.be.revertedWithCustomError(BestToken, "OwnableUnauthorizedAccount").withArgs(user2.address);
+ });
  
 
 });
