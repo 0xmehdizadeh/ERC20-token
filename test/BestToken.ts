@@ -89,6 +89,17 @@ describe("BestToken", function () {
     .to.be.revertedWithCustomError(BestToken, "OwnableUnauthorizedAccount")
     .withArgs(user1.address);
  });
+
+ it("Ownership transfer requires two steps", async function () {
+   await BestToken.connect(owner).transferOwnership(user1.address);
+   let theOwner = await BestToken.owner();
+   expect(theOwner).to.equal(owner.address);
+
+   await BestToken.connect(user1).acceptOwnership();
+    theOwner = await BestToken.owner();
+   
+   expect(theOwner).to.equal(user1.address);
+ });
  
 
 });
