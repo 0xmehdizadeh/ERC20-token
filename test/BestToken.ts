@@ -80,6 +80,15 @@ describe("BestToken", function () {
   expect(user2Balance).to.equal(mintedAmount);
  });
  
+ it("Non-owner cannot pause and unpause", async function(){
+  await expect(BestToken.connect(user1).pause()).to.be.revertedWithCustomError(
+    BestToken,
+    "OwnableUnauthorizedAccount",
+  ).withArgs(user1.address);
+  await expect(BestToken.connect(user1).unpause())
+    .to.be.revertedWithCustomError(BestToken, "OwnableUnauthorizedAccount")
+    .withArgs(user1.address);
+ });
  
 
 });
