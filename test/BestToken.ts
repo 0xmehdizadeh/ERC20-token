@@ -134,4 +134,56 @@ describe("BestToken", function () {
    expect(user1Balance).to.equal(mintAmount - burnAmount);
    expect(allowance).to.equal(0);
  });
+
+ it("Permit sets allowance via signature", async function () {
+   const value = ethers.parseEther("500");
+   const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+   const nonce = await BestToken.nonces(owner.address);
+   const contractAddress = await BestToken.getAddress();
+   const { chainId } = await ethers.provider.getNetwork();
+
+   const domain = {
+     name: "BestToken",
+     version: "1",
+     chainId: chainId,
+     verifyingContract: contractAddress,
+   };
+
+   const types = {
+     Permit: [
+       { name: "owner", type: "address" },
+       { name: "spender", type: "address" },
+       { name: "value", type: "uint256" },
+       { name: "nonce", type: "uint256" },
+       { name: "deadline", type: "uint256" },
+     ],
+   };
+
+   const message = {
+     owner: owner.address,
+     spender: user1.address,
+     value: value,
+     nonce: nonce,
+     deadline: deadline,
+   };
+
+   const signature = await owner.signTypedData(domain, types, message);
+   const { v, r, s } = ethers.Signature.from(signature);
+
+   await BestToken.permit(
+     owner.address,
+     user1.address,
+     value,
+     deadline,
+     v,
+     r,
+     s,
+   );
+
+   const allowance = await BestToken.allowance(owner.address, user1.address);
+   expect(allowance).to.equal(value);
+
+   const newNonce = await BestToken.nonces(owner.address);
+   expect(newNonce).to.equal(nonce + 1n);
+ });
 });
