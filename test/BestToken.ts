@@ -119,5 +119,19 @@ describe("BestToken", function () {
   expect(ownerBalance).to.equal(initialSupply - burnAmount);
  });
 
+ it("Burn tokens from another address", async function () {
+   const mintAmount = ethers.parseEther("2000");
+   const burnAmount = ethers.parseEther("1000");
 
+   await BestToken.connect(owner).mint(user1.address, mintAmount);
+   let user1Balance = await BestToken.balanceOf(user1.address);
+   expect(user1Balance).to.equal(mintAmount);
+
+   await BestToken.connect(user1).approve(owner.address, burnAmount);
+   await BestToken.connect(owner).burnFrom(user1.address, burnAmount);
+   user1Balance = await BestToken.balanceOf(user1.address);
+   let allowance = await BestToken.allowance(user1.address, owner.address);
+   expect(user1Balance).to.equal(mintAmount - burnAmount);
+   expect(allowance).to.equal(0);
+ });
 });
