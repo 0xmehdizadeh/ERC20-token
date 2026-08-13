@@ -1,0 +1,7 @@
+{
+  "BestToken": {
+    "name": "Best",
+    "symbol": "BST",
+    "initial":"1000000"
+  }
+}
