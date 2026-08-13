@@ -232,4 +232,44 @@ describe("BestToken", function () {
    ).to.be.revertedWithCustomError(BestToken, "ERC2612ExpiredSignature").withArgs(deadline);
 
  });
+
+  it("Permit reverts with wrong signer", async function () {
+    const value = ethers.parseEther("500");
+    const deadline = Math.floor(Date.now() / 1000) + 3600; // 1 hour from now
+    const nonce = await BestToken.nonces(owner.address);
+    const contractAddress = await BestToken.getAddress();
+    const { chainId } = await ethers.provider.getNetwork();
+
+    const domain = {
+      name: "BestToken",
+      version: "1",
+      chainId: chainId,
+      verifyingContract: contractAddress,
+    };
+
+    const types = {
+      Permit: [
+        { name: "owner", type: "address" },
+        { name: "spender", type: "address" },
+        { name: "value", type: "uint256" },
+        { name: "nonce", type: "uint256" },
+        { name: "deadline", type: "uint256" },
+      ],
+    };
+
+    const message = {
+      owner: owner.address,
+      spender: user1.address,
+      value: value,
+      nonce: nonce,
+      deadline: deadline,
+    };
+
+    const signature = await user2.signTypedData(domain, types, message);
+    const { v, r, s } = ethers.Signature.from(signature);
+
+    await expect(
+      BestToken.permit(owner.address, user1.address, value, deadline, v, r, s),
+    ).to.be.revertedWithCustomError(BestToken, "ERC2612InvalidSigner").withArgs(user2.address, owner.address);
+  });
 });
