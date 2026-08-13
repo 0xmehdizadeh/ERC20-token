@@ -10,6 +10,9 @@
 # Hardhat Build Artifacts
 /artifacts
 
+# Local Hardhat network deployment artifacts
+/ignition/deployments/chain-31337
+
 # Hardhat compilation (v2) support directory
 /cache
 
