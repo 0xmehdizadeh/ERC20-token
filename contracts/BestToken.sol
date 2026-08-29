@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Permit.sol";
 import "@openzeppelin/contracts/access/Ownable2Step.sol";
 
-/// @title BestToken: An ERC20 token 
+/// @title BestToken: An ERC20 token
 /// @author 0xmehdizadeh
 /// @notice ERC20 token with capped supply, burnability, gasless approvals, two-step ownership, and pausability.
 /// @dev Combines OpenZeppelin v5 extensions. The supply cap is set to twice the initial mint amount at deployment.
