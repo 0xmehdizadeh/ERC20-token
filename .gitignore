@@ -32,3 +32,5 @@
 
 # Snapshot cheatcodes output
 /snapshots
+out/
+docs/
