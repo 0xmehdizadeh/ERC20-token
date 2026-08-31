@@ -31,6 +31,9 @@ contract BestToken is ERC20, ERC20Capped, ERC20Burnable, ERC20Permit, Ownable2St
 
     /// @dev Delegates to the parent override chain:
     ///      {ERC20Pausable} (pause check) → {ERC20Capped} (cap check) → {ERC20} (balance update).
+    /// @param from Sender address (zero address for mints).
+    /// @param to Recipient address (zero address for burns).
+    /// @param value Amount of tokens transferred, minted, or burned, in smallest units (i.e. `10 ** decimals()` per whole token).
     function _update(address from, address to, uint256 value)
         internal
         override(ERC20, ERC20Capped, ERC20Pausable)
