@@ -66,4 +66,3 @@ npx hardhat ignition deploy ignition/modules/BestToken.ts --network sepolia
 ## Next Steps
 
 - See the [API Reference](/docs/api/BestToken) for a full breakdown of the contract's functions, parameters, and the `_update` override chain.
-- See [Architecture](/docs/architecture) for a visual overview of how transfers, mints, and burns flow through the contract.
