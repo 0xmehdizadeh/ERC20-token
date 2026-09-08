@@ -1,0 +1,20 @@
+name: Check Documentation links 
+
+on: 
+  push
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: --verbose --on-progress 'website/docs/**/*.md'
+          fail: true
