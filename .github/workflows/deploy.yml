@@ -1,9 +1,10 @@
+# CD workflow for GitHub Pages deployment
 name: Deploy Docs to Github Pages
 
 on:
   push:
     branches:
-      - main
+      - master
 jobs:
   deploy:
     runs-on: ubuntu-latest
