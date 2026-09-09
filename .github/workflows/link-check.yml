@@ -17,4 +17,4 @@ jobs:
         run: cargo install lychee
       
       - name: Check links
-        run: lychee --verbose --root-dir 'website/docs/**/*.md'
+        run: lychee --verbose --root-dir website 'website/docs/**/*.md'
