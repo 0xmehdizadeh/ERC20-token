@@ -13,8 +13,8 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
       
-      - name: Link Checker
-        uses: lycheeverse/lychee-action@v1.9.1
-        with:
-          args: --verbose --on-progress 'website/docs/**/*.md'
-          fail: true
+      - name: Install lychee
+        run: cargo install lychee
+      
+      - name: Check links
+        run: lychee --verbose 'website/docs/**/*.md'
