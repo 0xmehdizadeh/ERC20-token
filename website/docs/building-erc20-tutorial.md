@@ -72,6 +72,47 @@ This is your starting point. In the next steps, we'll add the specific overrides
 
 ### 2. Add Capped Extension
 
+Capped extension adds a cap to the supply of tokens. It restricts the amount of tokens that can be minted, ensuring the total supply never exceeds the cap defined in the constructor.
+
+**The _update Override**
+
+To enforce the cap, we need to override the `_update()` function:
+
+```solidity
+function _update(address from, address to, uint256 amount)
+    internal
+    override(ERC20, ERC20Capped)
+{
+    super._update(from, to, amount);
+}
+```
+
+This override ensures that every transfer (including minting) checks the cap constraint.
+
+**Updated Contract**
+
+Here's BestToken with Capped working:
+
+```solidity
+// ... imports ...
+
+contract BestToken is ERC20, ERC20Capped, ... {
+    constructor()
+        ERC20("BestToken", "BEST")
+        ERC20Capped(1000000 * 10 ** decimals())
+    {}
+
+    function _update(address from, address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Capped)
+    {
+        super._update(from, to, amount);
+    }
+}
+```
+
+Now, if you try to mint more than 1 million tokens, the transaction will revert.
+
 ### 3. Add Burnable Extension
 
 ### 4. Add Pausable Extension
