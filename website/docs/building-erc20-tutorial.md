@@ -260,6 +260,23 @@ An employee signs a permit message, allowing a marketplace to spend their tokens
 
 ### 6. Add Ownable2Step Extension
 
+Ownable2Step makes ownership transfer safer with a two-step process. Ownership transfer requires acceptance from the new owner. This prevents accidentally transferring ownership to a wrong address. If the current owner makes a typo, the new owner must accept the transfer before it completes.
+
+**The Two Functions**
+
+`transferOwnership(address newOwner)` — Called by the current owner to propose a new owner
+
+`acceptOwnership()` — Called by the proposed new owner to accept and finalize the transfer
+
+**Ownership Transfer Flow**
+
+1. Current owner calls `transferOwnership("0xNewOwnerAddress")`
+2. New owner receives proposal notification
+3. New owner calls `acceptOwnership()` to complete transfer
+4. If new owner doesn't call it, transfer stays pending
+
+This two-step process prevents ownership accidents.
+
 ### 7. Deploy with Foundry
 
 ## Conclusion
