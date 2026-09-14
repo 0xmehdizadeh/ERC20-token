@@ -209,6 +209,55 @@ If a vulnerability is discovered, the owner calls `pause()` to stop all transfer
 
 ### 5. Add Permit (ERC2612) Extension
 
+The Permit extension allows changing an account's allowance by presenting a message signed by the account. The token holder doesn't need to send a transaction, so they don't need to hold Ether at all.
+
+**The permit() Function**
+
+Instead of calling `approve()`, users sign a permit message:
+
+```solidity
+function permit(
+    address owner,
+    address spender,
+    uint256 value,
+    uint256 deadline,
+    uint8 v,
+    bytes32 r,
+    bytes32 s
+) public
+```
+
+**How It Works**
+
+1. User signs a message off-chain (using MetaMask, etc.)
+2. Someone submits the signed message to `permit()`
+3. The contract recovers the signer and sets the allowance
+4. No ETH required for the approval transaction
+
+**No _update() Override**
+
+Permit doesn't override `_update()`. It works independently through cryptographic signatures.
+
+**Updated Contract**
+
+The contract now inherits from `ERC20Permit`:
+
+```solidity
+contract BestToken is ERC20, ERC20Burnable, ERC20Pausable, ERC20Permit, ERC20Capped, ... {
+    constructor()
+        ERC20("BestToken", "BEST")
+        ERC20Permit("BestToken")  // Add this line
+        ERC20Capped(1000000 * 10 ** decimals())
+    {}
+    
+    // _update() and other functions remain the same
+}
+```
+
+**Use Case**
+
+An employee signs a permit message, allowing a marketplace to spend their tokens. The marketplace submits the permit on-chain in one transaction, no separate approve needed.
+
 ### 6. Add Ownable2Step Extension
 
 ### 7. Deploy with Foundry
