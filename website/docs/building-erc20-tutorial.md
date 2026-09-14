@@ -317,3 +317,22 @@ npx hardhat ignition deploy ignition/modules/BestToken.ts --network localhost
 You'll see the deployed contract address. Save it — you'll need it for testing and verification.
 
 ## Conclusion
+
+You've successfully built BestToken, a production-ready ERC20 token with:
+
+- **Capped supply** — Fixed 2 million token cap prevents inflation
+- **Burnable** — Token holders can remove tokens from circulation
+- **Pausable** — Emergency mechanism to halt transfers if issues arise
+- **Permit** — Gasless approvals via ERC2612 standard
+- **Ownable2Step** — Safe ownership transfer with two-step confirmation
+
+You now understand the `_update()` override chain and how OpenZeppelin extensions compose together. This contract is secure, audited through OpenZeppelin's libraries, and ready for real-world use.
+
+**Next Steps**
+
+1. Write tests for each function
+2. Deploy to a testnet (Sepolia)
+3. Verify the contract on Etherscan
+4. See the [Architecture Overview](./architecture-overview.md) for deeper design context
+
+Your BestToken is complete.
