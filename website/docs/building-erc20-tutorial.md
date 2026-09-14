@@ -149,6 +149,64 @@ Burnable is now active. Any user can burn their own tokens at any time.
 
 ### 4. Add Pausable Extension
 
+The Pausable extension allows the owner of the contract to temporarily stop all token transfers in case of security issues or detected bugs. Once resolved, transfers can be unpaused. This is an emergency safeguard, not meant for regular operation.
+
+**The _update Override**
+
+Pausable requires an `_update()` override to check if transfers are paused before allowing any transfer or mint:
+
+```solidity
+function _update(address from, address to, uint256 amount)
+    internal
+    override(ERC20, ERC20Pausable, ERC20Capped)
+{
+    super._update(from, to, amount);
+}
+```
+
+Notice the override list now includes three extensions: `ERC20`, `ERC20Pausable`, and `ERC20Capped`.
+
+**The pause() and unpause() Functions**
+
+Only the owner can pause or unpause:
+
+```solidity
+function pause() public onlyOwner {
+    _pause();
+}
+
+function unpause() public onlyOwner {
+    _unpause();
+}
+```
+
+**Updated Contract**
+
+```solidity
+contract BestToken is ERC20, ERC20Burnable, ERC20Pausable, ERC20Capped, ... {
+    // ... constructor ...
+
+    function _update(address from, address to, uint256 amount)
+        internal
+        override(ERC20, ERC20Pausable, ERC20Capped)
+    {
+        super._update(from, to, amount);
+    }
+
+    function pause() public onlyOwner {
+        _pause();
+    }
+
+    function unpause() public onlyOwner {
+        _unpause();
+    }
+}
+```
+
+**Use Case**
+
+If a vulnerability is discovered, the owner calls `pause()` to stop all transfers immediately while the fix is deployed.
+
 ### 5. Add Permit (ERC2612) Extension
 
 ### 6. Add Ownable2Step Extension
