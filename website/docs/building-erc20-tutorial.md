@@ -277,6 +277,43 @@ Ownable2Step makes ownership transfer safer with a two-step process. Ownership t
 
 This two-step process prevents ownership accidents.
 
-### 7. Deploy with Foundry
+### 7. Deploy with Hardhat
+
+Hardhat's flexibility allows you to deploy your smart contracts in two ways:
+* using Hardhat Ignition
+* using a script
+
+Here we continue to deploy the contract using Hardhat Ignition modules.
+
+To build a deployment module, create `ignition/modules/BestToken.ts`:
+
+```typescript
+import { buildModule } from "@nomicfoundation/hardhat-ignition/modules";
+
+export default buildModule("BestToken", (m) => {
+  const name = m.getParameter("name", "BestToken");
+  const symbol = m.getParameter("symbol", "BEST");
+  const owner = m.getParameter("owner", m.getAccount(0));
+  const initial = m.getParameter("initial", 1000000n);
+
+  const bestToken = m.contract("BestToken", [name, symbol, owner, initial]);
+
+  return { bestToken };
+});
+```
+
+Now that the module definition is ready, let's deploy it to a local Hardhat node. Start by spinning up a local node:
+
+```bash
+npx hardhat node
+```
+
+In another terminal, run:
+
+```bash
+npx hardhat ignition deploy ignition/modules/BestToken.ts --network localhost
+```
+
+You'll see the deployed contract address. Save it — you'll need it for testing and verification.
 
 ## Conclusion
