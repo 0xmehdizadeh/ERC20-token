@@ -20,14 +20,18 @@ This tutorial uses Hardhat for development and testing. We assume you've worked 
 ### 1. Set up the contract
 
 First, create a new directory for your project:
-``` bash
+
+```bash
 mkdir BestToken
 cd BestToken
 ```
+
 Then, initialize your hardhat project by:
-``` bash
+
+```bash
 npx hardhat --init
 ```
+
 This command will prompt you with a few configuration options. You can accept the default answers to quickly create a working setup. Using the defaults will initialize the project in the current directory and automatically install all required dependencies.
 
 **Project Structure**
@@ -40,6 +44,7 @@ BestToken/
 ├── hardhat.config.ts
 └── package.json
 ```
+
 Now, install OpenZeppelin Contracts v5:
 
 ```bash
@@ -74,7 +79,7 @@ This is your starting point. In the next steps, we'll add the specific overrides
 
 Capped extension adds a cap to the supply of tokens. It restricts the amount of tokens that can be minted, ensuring the total supply never exceeds the cap defined in the constructor.
 
-**The _update Override**
+**The \_update Override**
 
 To enforce the cap, we need to override the `_update()` function:
 
@@ -114,6 +119,33 @@ contract BestToken is ERC20, ERC20Capped, ... {
 Now, if you try to mint more than 1 million tokens, the transaction will revert.
 
 ### 3. Add Burnable Extension
+
+Token holders can permanently remove tokens from circulation by burning them, both their own tokens or those they have approval for. The ERC20Burnable extension provides the `burn()` function for this.
+
+**No _update Override Needed**
+
+Unlike Capped, Burnable doesn't require an `_update()` override. The `burn()` function is already implemented by the extension and works independently.
+
+**The burn() Function**
+
+Users call `burn()` like this:
+
+```solidity
+// Burn 100 tokens from the caller's account
+bestToken.burn(100 * 10 ** 18);
+```
+
+**Updated Contract**
+
+Here's the full contract with Burnable added:
+
+```solidity
+contract BestToken is ERC20, ERC20Burnable, ERC20Capped, ... {
+    // ... constructor and _update() ...
+}
+```
+
+Burnable is now active. Any user can burn their own tokens at any time.
 
 ### 4. Add Pausable Extension
 
