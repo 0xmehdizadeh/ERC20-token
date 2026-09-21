@@ -1,0 +1,30 @@
+name: Run Typescript tests
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Download repository code to Github runner
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      # Install Node.js runtime
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      # Install project dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # Run smart contract tests
+      - name: Run tests
+        run: npm test
+
